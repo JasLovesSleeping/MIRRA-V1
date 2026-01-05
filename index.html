@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MIRRA | Wealth Archetype Discovery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter+Tight:wght@100..600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-top: #F7E9D3;    
+        --bg-bottom: #FFFFFF; 
+        
+        --text-color: #2A2A28; 
+        --color-gold: #BC9F79; 
+        --color-gold-light: #F4EDE1;
+        --color-gold-deep: #8E7A5D;
+        
+        --text-muted: rgba(42, 42, 40, 0.7); 
+        --border-color: rgba(188, 159, 121, 0.2);
+        
+        --orb-color-white: rgba(255, 255, 255, 0.9);
+        --orb-color-gold: rgba(247, 233, 211, 0.7);
+        --orb-color-shadow: rgba(188, 159, 121, 0.12);
+      }
+
+      html.dark-mode {
+        --bg-top: #3D3D3B;
+        --bg-bottom: #2A2A28;
+        --text-color: #F4EDE1;
+        --text-muted: rgba(244, 237, 225, 0.7);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --color-gold: #D4B07D;
+        --color-gold-light: #F5E8D3;
+        --color-gold-deep: #BFA06D;
+        
+        --orb-color-white: rgba(255, 255, 255, 0.05);
+        --orb-color-gold: rgba(188, 159, 121, 0.08);
+        --orb-color-shadow: rgba(0, 0, 0, 0.2);
+      }
+
+      body {
+        font-family: 'Inter Tight', sans-serif;
+        background-color: var(--bg-top);
+        color: var(--text-color);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        transition: color 1.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 1.5s ease;
+        min-height: 100vh;
+      }
+
+      .bg-gradient-mirror {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        background: linear-gradient(to bottom, var(--bg-top) 0%, #FAF9F6 50%, var(--bg-bottom) 100%);
+        transition: background 2.5s ease;
+      }
+
+      h1, h2, h3, h4, h5, .font-serif {
+        font-family: 'Bodoni Moda', serif;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+      }
+
+      /* Slow, Natural Free-Floating Shimmer */
+      @keyframes floatShimmer {
+        0% { background-position: 0% 50%; }
+        25% { background-position: 100% 20%; }
+        50% { background-position: 50% 100%; }
+        75% { background-position: 0% 80%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .shimmer-text {
+        background: radial-gradient(
+          circle at center,
+          var(--color-gold) 0%,
+          white 30%,
+          var(--text-color) 60%,
+          var(--text-color) 100%
+        );
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: floatShimmer 15s infinite ease-in-out;
+      }
+
+      .thin-logo {
+        font-family: 'Inter Tight', sans-serif;
+        font-weight: 300;
+        letter-spacing: 0.9em;
+        font-size: 1.2rem;
+        display: inline-block;
+        text-transform: uppercase;
+        
+        /* Shimmer integrated */
+        background: radial-gradient(
+          circle at center,
+          #fff 0%,
+          var(--color-gold) 40%,
+          var(--text-color) 70%,
+          var(--text-color) 100%
+        );
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: floatShimmer 12s infinite ease-in-out;
+      }
+
+      .headline-shimmer {
+        @extend .shimmer-text;
+      }
+
+      @keyframes drift {
+        0% { transform: translate(0, 0); }
+        50% { transform: translate(40px, -20px); }
+        100% { transform: translate(0, 0); }
+      }
+
+      @keyframes drift-alt {
+        0% { transform: translate(0, 0); }
+        50% { transform: translate(-30px, 40px); }
+        100% { transform: translate(0, 0); }
+      }
+
+      .floating-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+        will-change: transform;
+      }
+
+      .orb-cluster-item {
+        mix-blend-mode: soft-light;
+        animation: drift 25s infinite ease-in-out;
+      }
+
+      .orb-cluster-item:nth-child(even) {
+        animation: drift-alt 30s infinite ease-in-out;
+      }
+
+      .noise-texture {
+        position: fixed;
+        inset: 0;
+        z-index: 5; 
+        opacity: 0.04;
+        pointer-events: none;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+      }
+
+      ::-webkit-scrollbar { width: 2px; }
+      ::-webkit-scrollbar-thumb { background: var(--color-gold); }
+    </style>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+  </head>
+  <body>
+    <div class="noise-texture"></div>
+    <div id="root"></div>
+  </body>
+</html>
